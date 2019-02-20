@@ -13,13 +13,15 @@ module.exports = function (file, opts) {
 
   var blockSize = opts.blockSize || 1024*16
   var codec = opts.codec || {encode: id, decode: id, buffer: true}
-  var flags = opts.flags || 'a+'
+  var flags = opts.flags || 'r' // readonly
   var cache = opts.cache || Cache(1024)
+  var since = opts.since
+
   var offsetCodec = opts.offsetCodec || 32
 
   var blocks = Blocks(file, blockSize, flags, cache)
   var frame = createFrame(blocks, blockSize, offsetCodec)
-  return inject(blocks, frame, codec, file)
+  return inject(blocks, frame, codec, file, null, since)
 }
 
 var warned = false
